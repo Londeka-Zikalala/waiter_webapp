@@ -1,10 +1,30 @@
-<div class="header">
-<h1>Login to Schedule</h1>
-</div>
-<div class="input">
-  <label for="name" id="name" class="input-name">Username</label>
-        <input type="textboxt" name="name" class="input-name" placeholder="eg:Londeka" value="">
-    <label for="password" id="password" class="password">Enter Password</label>
-        <input type="password" name="password">
-    <button name="signIn" class="signin" type="submit">Login</button>
+<div class="heading"><h1>SELECT DAYS AVAILABLE FOR THE WEEK</h1></div>
+<form action="/waiters" method="post">
+  <label for="username">Username:</label><br>
+  <input type="text" id="username" name="username" value="{{username}}"><br>
+
+  
+  <label>Available Days:</label><br>
+  <input type="checkbox" id="Monday" name="days" value="Monday">
+  <label for="Monday">Monday</label><br>
+  <input type="checkbox" id="Tuesday" name="days" value="Tuesday">
+  <label for="Tuesday">Tuesday</label><br>
+  <input type="checkbox" id="Wednesday" name="days" value="Wednesday">
+  <label for="Wednesday">Wednesday</label><br>
+  <input type="checkbox" id="Thursday" name="days" value="Thursday">
+  <label for="Thursday">Thursday</label><br>
+  <input type="checkbox" id="Friday" name="days" value="Friday">
+  <label for="Friday">Friday</label><br>
+  <input type="checkbox" id="Saturday" name="days" value="Saturday">
+  <label for="Saturday">Saturday</label><br>
+  <input type="checkbox" id="Sunday" name="days" value="Sunday">
+  <label for="Sunday">Sunday</label><br>
+  
+  <input type="submit" value="Submit">
+</form>
+
+
+   
+
+</form>
 </div>

@@ -1,54 +1,69 @@
 function waiter(db){
-    //Gets available waiters
-    async function waiters(waiterName){
-        //Add a waiter to the database
-        try{
-             await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName])
-        
-    }catch(error){
-        console.error('Error getting waiters')
-    }
-    }
-
-    //get the waiters  by each day 
-    async function setAvailableDay(dayOfTheWeek){
-        try{
-            await db.none('UPDATE scheduling.day_of_the_week SET available = $1 WHERE day=$2', [true, dayOfTheWeek])
-        }catch(error){
-            console.error('Error updating schedule')
-        }
-    }
-
-    async function getAvailableDays(){
-        try{
-            //get the days where the available is true
-            let availableDay = await db.manyOrOne('SELECT day = $1 FROM scheduling.day_of_the_week WHERE available = $2', [true]);
-            return availableDay;
-        }catch(error){
-            console.error('Error getting waiters')
-        }
+    //function to get waiter names and the days they are available and insert into the schedule table 
+    async function waiters(waiterName, dayOfTheWeek){
+        //INSERT the inpuit waiterName to the waiters table
+        try{  for(var i = 0; i<waiterName.length; i++){
+            let waiterNames = waiterName[i]
+            await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterNames]);
+            
+    //Get the id of the waiter name 
+         let waiterId =   await db.manyOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
+       
     
+    
+      for(var i = 0; i<dayOfTheWeek.length; i++){
+        let anyDay = dayOfTheWeek[i]
+        //set not  available to false
+        await db.none('UPDATE scheduling.day_of_the_week SET available = $1 WHERE day =$2', [false, anyDay]);
+        //get id for days selected as available
+        let dayId = await db.manyOrNone('SELECT id FROM scheduling.day_of_the_week WHERE day = $1 AND available = $2', [anyDay,true])
+   
+    
+     //INSERT Waiter name and day availability 
+        await db.none('INSERT INTO scheduling.schedule (waiter_id,day_id) VALUES ($1,$2)',[waiterId.id, dayId.id])
+        }
     }
-    //getting available waiters on a day
+        }
+        catch(error){
+            console.error(error.message)
+        }
+
+    }
+
+ 
+
+    //get each waiter's  schedule 
     async function getWaiterSchedule(waiterName){
         try{
-            //gets the names of waiters along with the days of the week, shows which days they are off and which days theur on duty
-            let waiterSchedule = await db.manyOrOne(' SELECT scheduling.waiters.id, scheduling.waiters.waiter_name, scheduling.day_of_the_week.day, scheduling.day_of_the_week.available FROM scheduling.waiters JOIN scheduling.day_of_the_week ON scheduling.waiters.id = scheduling.day_of_the_week.waiter_id WHERE scheduling.waiters.waiter_name = $1', [waiterName])
+            let waiterSchedule = await db.many('SELECT scheduling.waiters.waiter_name, scheduling.day_of_the_week.day FROM scheduling.waiters JOIN scheduling.schedule ON scheduling.waiters.id = scheduling.schedule.waiter_id JOIN scheduling.day_of_the_week ON scheduling.schedule.day_id = scheduling.day_of_the_week.id WHERE scheduling.waiters.waiter_name = $1', [waiterName])
             return waiterSchedule
         }
         catch(error){
-            console.error('Error getting waiters')
+            console.error(error.message)
         }
     }
-   
 
+    //get all waiters schedule 
+    async function getAllSchedules(){
+        try{
+            let allWaiterSchedules = await db.manyOrNone('');
+            return allWaiterSchedules;
+        }
+        catch(error){
+            console.error(error.message)
+        }
+    }
+
+    //count the number of waiters per day 
+    async function countAvailableWaiters(){
+
+    }
+    
     return{
         waiters,
-        setAvailableDay,
-        getAvailableDays,
-        getWaiterNames,
-        getWaiterSchedule
-        
+        getAllSchedules,
+        getWaiterSchedule,
+        countAvailableWaiters,
     }
 }
 

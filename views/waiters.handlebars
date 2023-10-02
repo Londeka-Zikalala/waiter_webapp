@@ -1,45 +1,16 @@
-<div class="heading">
-    <h1>Indicate Availability For The Week</h1>
-</div>
-<div class="waiterInput">
-    <form action="/waiters" method="POST">
-        {{!-- <form action="/waiters/:username" method="POST"> --}}
-            <label for="name" class="name">
-                <select name="name" class="name">
-                    <option value=""></option>
-                    <option value="Sarah">Sarah</option>
-                    <option value="Kent">Kent</option>
-                    <option value="Thabo">Thabo</option>
-                    <option value="Kwanele">Kwanele</option>
-                    <option value="Samu">Samu</option>
-                    <option value="Lexy">Lexy</option>
-                    <option value="Kal">Kal</option>
-                    <option value="Carol">Carol</option>
-                </select>
-            </label>
-            <input type="checkbox" id="monday" name="dayOfTheWeek" value="Monday">
-            <label for="monday">Monday</label>
-            <input type="checkbox" id="tuesday" name="dayOfTheWeek" value="Tuesday">
-            <label for="tuesday">Tuesday</label>
-            <input type="checkbox" id="wednesday" name="dayOfTheWeek" value="Wednesday">
-            <label for="wednesday">Wednesday</label>
-            <input type="checkbox" id="thursday" name="dayOfTheWeek" value="Thursday">
-            <label for="thursday">Thursday</label>
-            <input type="checkbox" id="friday" name="dayOfTheWeek" value="Friday">
-            <label for="friday">Friday</label>
-            <input type="checkbox" id="saturday" name="dayOfTheWeek" value="Saturday">
-            <label for="saturday">Saturday</label>
-            <input type="checkbox" id="sunday" name="dayOfTheWeek" value="Sunday">
-            <label for="sunday">Sunday</label>
-            <button type="submit" name="show">Show Days</button>
-        </form>
-
-        <form action="/waiters/:name" method="get">
-            {{!-- <button type="submit" name="show">Show Days</button> --}}
-            <table>
-                <th>{{this.name}}</th>
-                <tr>{{this.day_of_the_week}}</tr>
-            </table>
-        </form>
-    {{!-- </form> --}}
+<div class="view-schedule">
+<form action="/waiters/{{username}}" method="GET">
+<h1>Hi, {{username}} view and update your schedule here</h1>
+  <button type="submit">View Schedule</button>
+</form>
+  <div class="schedule">
+     <table>
+        {{#each waiterSchedule}}
+        <tr>
+          <td>{{this.waiter_name}}</td>
+          <td>{{this.day}}</td>
+        </tr>
+        {{/each}}
+     </table>
+  </div>
 </div>
