@@ -1,10 +1,17 @@
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Monday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Tuesday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Wednesday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Thursday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Friday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Saturday', TRUE);
-INSERT INTO scheduling.day_of_the_week (day, available) VALUES ('Sunday', TRUE);
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Monday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Tuesday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Wednesday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Thursday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Friday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Saturday');
+INSERT INTO scheduling.day_of_the_week (day) VALUES ('Sunday');
 
 
 
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);
+INSERT INTO scheduling.schedule (available) VALUES (false);

@@ -37,7 +37,20 @@
     width:20%;
     margin-inline: 40%;
 }
-.signin, .input-name, .password{
-    margin:2%;
-    padding:2%;
+.schedule{
+    margin-inline: 40%;
+}
+
+table{
+    border: red solid 1px;
+}
+
+th{
+    border: red solid 1px;
+    padding: 10px;
+    text-align: left;
+}
+
+td{
+    border: red solid 1px;
 }

@@ -24,22 +24,21 @@ router.get('/days', async(req,res)=>{
 })
 
 router.post('/waiters', async (req,res)=>{
-        try{
-            const waiterName = req.body.username;
-            const dayOfTheWeek = req.body.days;
+    try{
+        const waiterName = req.body.username;
+        const dayOfTheWeek = req.body.days;
 
-            //get the waiter name, and days and insert to the tables
-    
-                await waiterRoute.waiters(waiterName, dayOfTheWeek) //call the function for updating the name and days
-                console.log(waiterName, day)
-            
+        //get the waiter name, and days and insert to the tables
+        await waiterRoute.waiters(waiterName, dayOfTheWeek) //call the function for updating the name and days
+        console.log(waiterName, dayOfTheWeek)
 
-           res.redirect(`/waiters/${waiterName}`);
-        }
-        catch(error){
+        res.redirect(`/waiters/${waiterName}`);
+    }
+    catch(error){
         console.error('Failure to post schedules')
     }
 })
+
 
 router.get('/waiters/:username', async (req,res)=>{
     try{
@@ -47,10 +46,23 @@ router.get('/waiters/:username', async (req,res)=>{
         //get each waiter schedule 
         const waiterSchedule = await waiterRoute.getWaiterSchedule(name)
         res.render('waiters', {
-            waiterSchedule
+            waiterSchedule,
+            username: name
         })
     }catch(error){
         console.error('Failure to get schedules')
     }
 })
+router.post('/waiters/:username/cancel', async (req,res)=>{
+    try{
+        const waiterName = req.params.username;
+        const day = req.body.day;
+        await waiterRoute.cancel(waiterName, day);
+        res.redirect(`/waiters/${waiterName}`);
+    }
+    catch(error){
+        console.error('Failure to cancel schedule')
+    }
+})
+
 export default router
