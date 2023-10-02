@@ -11,7 +11,9 @@ router.get('/',  (req,res)=>{
 
 router.get('/days', async(req,res)=>{
     try{
+        //list all the schedules for the week to see available waiters
         const allSchedules = await waiterRoute.getAllSchedules()
+//list days and the number of avalable waiters 
 
         res.render('manager',{
             allSchedules
@@ -57,6 +59,7 @@ router.post('/waiters/:username/cancel', async (req,res)=>{
     try{
         const waiterName = req.params.username;
         const day = req.body.day;
+        //remove the available name
         await waiterRoute.cancel(waiterName, day);
         res.redirect(`/waiters/${waiterName}`);
     }
