@@ -13,8 +13,7 @@ router.get('/days', async(req,res)=>{
     try{
         //list all the schedules for the week to see available waiters
         const allSchedules = await waiterRoute.getAllSchedules()
-//list days and the number of avalable waiters 
-
+        //list days and the number of available waiters 
         res.render('manager',{
             allSchedules
         })
@@ -25,47 +24,49 @@ router.get('/days', async(req,res)=>{
 
 })
 
-router.post('/waiters', async (req,res)=>{
+router.post('/waiters/:username/update', async (req,res)=>{
     try{
-        const waiterName = req.body.username;
-        const dayOfTheWeek = req.body.days;
+        const waiterName = req.params.username;
+        const dayOfTheWeek = req.body.days || [];
 
         //get the waiter name, and days and insert to the tables
         await waiterRoute.waiters(waiterName, dayOfTheWeek) //call the function for updating the name and days
         console.log(waiterName, dayOfTheWeek)
-
-        res.redirect(`/waiters/${waiterName}`);
+        res.redirect(`/waiters/${waiterName}/update`);
     }
     catch(error){
         console.error('Failure to post schedules')
     }
 })
 
-
-router.get('/waiters/:username', async (req,res)=>{
-    try{
+router.get('/waiters/:username/update', async (req, res) => {
+    try {
         const name = req.params.username;
-        //get each waiter schedule 
+        // get each waiter schedule 
         const waiterSchedule = await waiterRoute.getWaiterSchedule(name)
-        res.render('waiters', {
+        res.render('waiters', { // render the update view
             waiterSchedule,
             username: name
-        })
-    }catch(error){
-        console.error('Failure to get schedules')
+        });
+    } catch (error) {
+        console.error('Failure to get schedules');
     }
-})
-router.post('/waiters/:username/cancel', async (req,res)=>{
-    try{
-        const waiterName = req.params.username;
-        const day = req.body.day;
-        //remove the available name
-        await waiterRoute.cancel(waiterName, day);
-        res.redirect(`/waiters/${waiterName}`);
-    }
-    catch(error){
-        console.error('Failure to cancel schedule')
-    }
-})
+});
 
-export default router
+
+router.get('/waiters/:username', async (req, res) => {
+    try {
+        const name = req.params.username;
+        // get each waiter schedule 
+        const waiterSchedule = await waiterRoute.getWaiterSchedule(name)
+        res.render('waiters', { // render the update view
+            waiterSchedule,
+            username: name
+        });
+    } catch (error) {
+        console.error('Failure to get schedules');
+    }
+});
+
+
+export default router;
