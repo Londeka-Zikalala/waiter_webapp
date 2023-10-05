@@ -9,12 +9,13 @@ router.get('/',  (req,res)=>{
     res.render('index')
 })
 
-router.get('/days', async(req,res)=>{
+router.get('/day', async(req,res)=>{
     try{
         //list all the schedules for the week to see available waiters
-        const allSchedules = await waiterRoute.getAllSchedules()
+        const allSchedules = await waiterRoute.getScheduleByDay()
+        console.log(allSchedules); 
         //list days and the number of available waiters 
-        res.render('manager',{
+        res.render('admin',{
             allSchedules
         })
     }
@@ -27,9 +28,10 @@ router.get('/days', async(req,res)=>{
 router.post('/waiters/:username/update', async (req,res)=>{
     try{
         const waiterName = req.params.username;
-        const dayOfTheWeek = req.body.days || [];
+        const dayOfTheWeek = req.body.days
 
         //get the waiter name, and days and insert to the tables
+        // await waiterRoute.setWaiterName(waiterName)
         await waiterRoute.waiters(waiterName, dayOfTheWeek) //call the function for updating the name and days
         console.log(waiterName, dayOfTheWeek)
         res.redirect(`/waiters/${waiterName}/update`);
@@ -41,12 +43,15 @@ router.post('/waiters/:username/update', async (req,res)=>{
 
 router.get('/waiters/:username/update', async (req, res) => {
     try {
-        const name = req.params.username;
+        const waiterName = req.params.username;
+        const dayOfTheWeek = req.body.days
+
         // get each waiter schedule 
-        const waiterSchedule = await waiterRoute.getWaiterSchedule(name)
+        await waiterRoute.waiters(waiterName, dayOfTheWeek)
+        const waiterSchedule = await waiterRoute.getWaiterSchedule(waiterName)
         res.render('waiters', { // render the update view
             waiterSchedule,
-            username: name
+            username: waiterName
         });
     } catch (error) {
         console.error('Failure to get schedules');
@@ -56,12 +61,12 @@ router.get('/waiters/:username/update', async (req, res) => {
 
 router.get('/waiters/:username', async (req, res) => {
     try {
-        const name = req.params.username;
+        const waiterName = req.params.username;
         // get each waiter schedule 
-        const waiterSchedule = await waiterRoute.getWaiterSchedule(name)
+        const waiterSchedule = await waiterRoute.getWaiterSchedule(waiterName)
         res.render('waiters', { // render the update view
             waiterSchedule,
-            username: name
+            username: waiterName
         });
     } catch (error) {
         console.error('Failure to get schedules');

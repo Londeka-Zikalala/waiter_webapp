@@ -20,10 +20,10 @@ app.use(flash());
 app.use('/', router);
 //handlebars engine
 
-
 hbs.handlebars.registerHelper('includes', function(arr, item) {
-  return arr.some(schedule => schedule.day === item);
+  return arr.includes(item);
 });
+
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
