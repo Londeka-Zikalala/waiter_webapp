@@ -1,47 +1,39 @@
 function waiter(db) {
-    async function setWaiterName(waiterName) {
-        //enter a waiter in the waiter table
-        try {
-            await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
-        }
-        catch (error) {
-            console.error(error.message)
-        }
-    }
+ 
 
     async function waiters(waiterName, dayOfTheWeek) {
         try {
-            let allDays = await db.manyOrNone('SELECT day FROM scheduling.day_of_the_week');
-            let daysToDelete = allDays.filter(day => !dayOfTheWeek.includes(day.day));
+            // Get all days from the database
+            const allDays = await db.manyOrNone('SELECT id, day FROM scheduling.day_of_the_week');
+             //get waitger name
+              await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
+            // Get waiter id
+            const waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
+            
+            const daysToDelete = [];
+            const daysToInsert = [];
     
-            for (let day of daysToDelete) {
-                let dayId = await db.oneOrNone('SELECT id FROM scheduling.day_of_the_week WHERE day = $1', [day]);
-                if (dayId !== null) {
-                    let waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
-                    if (waiterId !== null) {
-                        await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1 AND day_id = $2', [waiterId.id, dayId.id]);
-                    }
+            for (const day of allDays) {
+                if (dayOfTheWeek.includes(day.day)) {
+                    daysToInsert.push(day.id);
+                } else {
+                    daysToDelete.push(day.id);
                 }
             }
     
-            for (let day of dayOfTheWeek) {
-                let dayId = await db.oneOrNone('SELECT id FROM scheduling.day_of_the_week WHERE day = $1', [day]);
-                if (dayId !== null) {
-                    let waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
-                    if (waiterId !== null) {
-                        await db.none('INSERT INTO scheduling.schedule (waiter_id,day_id, available) VALUES ($1,$2, $3) ON CONFLICT (waiter_id, day_id) DO NOTHING', [waiterId.id, dayId.id, true]);
-                    }
-                }
+            // Delete unchecked days from the schedule
+            await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1 AND day_id = ANY($2)', [waiterId.id, daysToDelete]);
+    
+            // Insert or update availability for checked days
+            for (const dayId of daysToInsert) {
+                await db.none('INSERT INTO scheduling.schedule (waiter_id,day_id, available) VALUES ($1,$2, $3) ON CONFLICT (waiter_id, day_id) DO UPDATE SET available = true', [waiterId.id, dayId, true]);
             }
-        }
-        catch (error) {
-            console.error(error.message)
+        } catch (error) {
+            console.error(error.message);
         }
     }
     
-
-
-
+  
 
 
     async function getWaiterSchedule(waiterName) {
@@ -57,6 +49,7 @@ function waiter(db) {
 
 
     async function getAllSchedules() {
+        //join all the tables to return all the schedules
         try {
             let allWaiterSchedules = await db.manyOrNone('SELECT scheduling.waiters.waiter_name, scheduling.day_of_the_week.day FROM scheduling.waiters JOIN scheduling.schedule ON scheduling.waiters.id = scheduling.schedule.waiter_id JOIN scheduling.day_of_the_week ON scheduling.schedule.day_id = scheduling.day_of_the_week.id');
             return allWaiterSchedules;
@@ -85,6 +78,7 @@ function waiter(db) {
     }
 
     async function countAvailableWaiters(dayOfTheWeek) {
+        //count the name rows with a spoecific waiter_id
         try {
             let waiterCount = await db.manyOrNone('SELECT COUNT(waiter_id) FROM scheduling.schedule WHERE day_id = $1', [dayOfTheWeek])
             return waiterCount
@@ -93,36 +87,25 @@ function waiter(db) {
         }
     }
 
-
-    async function countAvailableWaiters(dayOfTheWeek) {
-        try {
-            let waiterCount = await db.manyOrNone('SELECT COUNT(waiter_id) FROM scheduling.schedule WHERE day_id = $1', [dayOfTheWeek])
-            return waiterCount
-        } catch (error) {
-            console.error(error.message)
-        }
-    }
-
-    async function cancelAll(waiterName) {
-        try {
-            //get waiter id
-            let waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
-            //delete all the available days from the schedule table
-            await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1', [waiterId.id]);
-        }
-        catch (error) {
-            console.error(error.message)
-        }
-    }
+    // async function cancelAll(waiterName) {
+    //     try {
+    //         //get waiter id
+    //         let waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
+    //         //delete all the available days from the schedule table
+    //         await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1', [waiterId.id]);
+    //     }
+    //     catch (error) {
+    //         console.error(error.message)
+    //     }
+    // }
 
     return {
-        setWaiterName,
         waiters,
         getAllSchedules,
         getScheduleByDay,
         getWaiterSchedule,
         countAvailableWaiters,
-        cancelAll
+        // cancelAll
     }
 }
 export default waiter
