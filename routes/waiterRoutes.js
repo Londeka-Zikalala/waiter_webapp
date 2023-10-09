@@ -10,12 +10,15 @@ export default function waiterRoutes(waiterRoute){
     }
         async function showAllSchedules(req,res,next){
             try{
+                const days = req.body.days
                 //list all the schedules for the week to see available waiters
                 const allSchedules = await waiterRoute.getScheduleByDay()
+                const numberOfWaiters = await waiterRoute.countAvailableWaiters(days)
                 console.log(allSchedules); 
                 //list days and the number of available waiters 
                 res.render('admin',{
-                    allSchedules
+                    allSchedules,
+                    numberOfWaiters
                 })
             }
             catch (error) {

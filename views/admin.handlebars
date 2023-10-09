@@ -1,9 +1,4 @@
-<div class="Heading">
-   <h1>Weekly Roster </h1> 
-</div>
-<div class="Onduty">
-    <form action="/day" method="GET">
-    <table>
+<table>
   <thead>
     <tr>
       {{#each allSchedules}}
@@ -21,10 +16,10 @@
         </td>
       {{/each}}
     </tr>
+    <tr>
+      {{#each numberOfWaiters}}
+        <td>{{this}}</td>
+      {{/each}}
+    </tr>
   </tbody>
 </table>
-
-        </form>
-    </div>
-
-</div>
