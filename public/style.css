@@ -54,3 +54,7 @@ th{
 td{
     border: red solid 1px;
 }
+
+ .waitersUl{
+    list-style: none;
+  }

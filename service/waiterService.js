@@ -5,28 +5,25 @@ function waiter(db) {
         try {
             // Get all days from the database
             const allDays = await db.manyOrNone('SELECT id, day FROM scheduling.day_of_the_week');
-             //get waitger name
-              await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
+            //get waiter name
+            await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
             // Get waiter id
             const waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
             
-            const daysToDelete = [];
             const daysToInsert = [];
     
             for (const day of allDays) {
                 if (dayOfTheWeek.includes(day.day)) {
                     daysToInsert.push(day.id);
-                } else {
-                    daysToDelete.push(day.id);
                 }
             }
     
-            // Delete unchecked days from the schedule
-            await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1 AND day_id = ANY($2)', [waiterId.id, daysToDelete]);
+            // Delete all days for this waiter from the schedule
+            await db.none('DELETE FROM scheduling.schedule WHERE waiter_id = $1', [waiterId.id]);
     
-            // Insert or update availability for checked days
+            // Insert availability for checked days
             for (const dayId of daysToInsert) {
-                await db.none('INSERT INTO scheduling.schedule (waiter_id,day_id, available) VALUES ($1,$2, $3) ON CONFLICT (waiter_id, day_id) DO UPDATE SET available = true', [waiterId.id, dayId, true]);
+                await db.none('INSERT INTO scheduling.schedule (waiter_id,day_id, available) VALUES ($1,$2, $3)', [waiterId.id, dayId, true]);
             }
         } catch (error) {
             console.error(error.message);

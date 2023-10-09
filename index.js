@@ -24,8 +24,12 @@ app.use(flash());
 //handlebars engine
 
 hbs.handlebars.registerHelper('includes', function(arr, item) {
-  return arr.includes(item);
+  // Map the array of objects to an array of days
+  const days = arr.map(a => a.day);
+  // Check if the item is included in the array of days
+  return days.includes(item);
 });
+
 
 
 app.engine('handlebars', engine());
@@ -43,7 +47,7 @@ app.get('/waiters/:username', waiterRoute.showWaiterSchedule )
 
 
 //local host 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3011
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
