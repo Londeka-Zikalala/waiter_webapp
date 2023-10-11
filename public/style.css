@@ -29,6 +29,7 @@
     border: 4px solid lightyellow;
     border-radius: 10px;
     text-align: center;
+    align-items: center;
 
 }
 .input{
@@ -41,18 +42,32 @@
     margin-inline: 40%;
 }
 
-table{
-    border: red solid 1px;
+table {
+    border-collapse: collapse; 
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+.green {
+    background-color: green;
+}
+.red {
+    background-color: red;
+}
+.orange {
+    background-color: orange;
 }
 
+
 th{
-    border: red solid 1px;
+    border: black solid 1px;
     padding: 10px;
     text-align: left;
 }
 
 td{
-    border: red solid 1px;
+    border: black solid 1px;
 }
 
  .waitersUl{

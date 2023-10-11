@@ -30,8 +30,18 @@ hbs.handlebars.registerHelper('includes', function(arr, item) {
   return days.includes(item);
 });
 
-
-
+hbs.handlebars.registerHelper('lt', function(a, b) {
+  return a < b;
+}); 
+hbs.handlebars.registerHelper('gte', function(a, b) {
+  return a >= b;
+});
+hbs.handlebars.registerHelper('lte', function(a, b) {
+  return a <= b;
+});
+hbs.handlebars.registerHelper('and', function(a, b) {
+  return a && b;
+});
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
@@ -43,6 +53,7 @@ app.get('/day', waiterRoute.showAllSchedules)
 app.post('/waiters/:username/update', waiterRoute.updateWaiterSchedule)
 app.get('/waiters/:username/update', waiterRoute.getWaiterUpdatedSchedule)
 app.get('/waiters/:username', waiterRoute.showWaiterSchedule )
+app.get('/reset', waiterRoute.resetSchedule)
 
 
 
