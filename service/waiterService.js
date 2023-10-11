@@ -12,8 +12,7 @@ async function updateSchedule(waiterName, dayOfTheWeek) {
         // }
 
         // Get waiter name
-        await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
-
+        await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1) ON CONFLICT (waiter_name) DO NOTHING', [waiterName]);
         // Get waiter id
         const waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
         //get the schedule
