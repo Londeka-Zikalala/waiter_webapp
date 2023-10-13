@@ -1,21 +1,17 @@
 function waiter(db) {
  
-
 // Function to update waiter's schedule
 async function updateSchedule(waiterName, dayOfTheWeek) {
     // console.log(waiterName, dayOfTheWeek)
     try {
         
-        // Validation: A waiter should not be able to send only one day to work
-        // if (dayOfTheWeek.length < 2) {
-        //     throw new Error('You must select more than one day to work.');
-        // }
-
-        // Get waiter name
-        await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1)', [waiterName]);
+                // Insert waiter name only if it doesn't already exist
+        await db.none('INSERT INTO scheduling.waiters (waiter_name) VALUES ($1) ON CONFLICT (waiter_name) DO NOTHING', [waiterName]);
 
         // Get waiter id
-        const waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
+       
+            const waiterId = await db.oneOrNone('SELECT id FROM scheduling.waiters WHERE waiter_name = $1', [waiterName]);
+        
         //get the schedule
         var available = await db.manyOrNone('SELECT day_id FROM scheduling.schedule WHERE waiter_id = $1', [waiterId.id])
 

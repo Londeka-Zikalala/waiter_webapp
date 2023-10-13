@@ -2,10 +2,12 @@
    <h1>Weekly Roster </h1> 
 </div>
 <div class="key">
-    <ul>
+    <ul class="adminUl">
+            <h3>Staffing status:</h3>
+
         <li>Green - There are enough waiters for the day</li>
         <li>Red - There are less than 3 waiters available for the day</li>
-        <li>Orange - There are more than 4 waiters for the day</li>
+        <li>Orange - There are more than 5 waiters for the day</li>
     </ul>
 </div>
 <div class="Onduty">
@@ -16,7 +18,7 @@
   <thead>
     <tr>
       {{#each allSchedules}}
-        <th class="{{#if (lt this.count 2)}}red{{else if (and (gte this.count 3) (lte this.count 4))}}green{{else}}orange{{/if}}">
+        <th class="{{this.status}}">
           {{@key}}
         </th>
       {{/each}}
@@ -38,5 +40,5 @@
     </form>
 </div>
 <form action="reset" method="GET">
-    <button type="submit" name="reset">Reset</button>
+    <input type="submit" value="reset">
 </form>

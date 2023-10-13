@@ -13,12 +13,30 @@ export default function waiterRoutes(waiterRoute){
         async function showAllSchedules(req,res,next){
             try{
                 //list all the schedules for the week to see available waiters
-                const allSchedules = await waiterRoute.getScheduleByDay()
-             console.log(allSchedules); 
-                //list days and the number of available waiters 
-                res.render('admin',{
-                    allSchedules,
-                })
+                const allSchedules = await waiterRoute.getScheduleByDay();
+
+                //Condition for  colors
+                
+                for (const day in allSchedules) {
+                    const { count } = allSchedules[day];
+                    // add a staffingStatus property to each day object
+                    if(count < 3){
+                      allSchedules[day].status = "red";
+                    }
+                    else if(count >= 3 && count <= 5){
+                      allSchedules[day].status = "green";
+                    }
+                    else if(count > 5 ){
+                      allSchedules[day].status = "orange";
+                    }
+                  }
+                  console.log(allSchedules); 
+                  // pass allSchedules to the template
+                  res.render('admin',{
+                    allSchedules
+                  })
+   
+              
             }
             catch (error) {
                 req.flash('error', 'error showing schedukes')
@@ -31,16 +49,7 @@ export default function waiterRoutes(waiterRoute){
             try{
                 const waiterName = req.params.username;
                 const dayOfTheWeek = req.body.days
-        // //check available days
-        // var daysToInsert = [];
-    
-        // // Check which checkboxes are selected
-        // for (var i = 0; i < dayOfTheWeek.length; i++) {
-        //     if (dayOfTheWeek[i].checked) {
-        //         // If checkbox is checked, push its id into daysToInsert
-        //         daysToInsert.push(dayOfTheWeek[i].id);
-        //     }
-        // }
+      
                 //get the waiter name, and days and insert to the tables
                 await waiterRoute.updateSchedule(waiterName, dayOfTheWeek) //call the function for updating the name and days
                 // console.log(waiterName, dayOfTheWeek)

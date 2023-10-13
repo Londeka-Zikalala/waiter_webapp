@@ -1,11 +1,7 @@
 <h1>{{username}}'s Schedule</h1>
 <div class="flash-success"></div>
 <div class="flash-error"></div>
-<ul class="waitersUl">
-    {{#each waiterSchedule}}
-    <li>{{this.day}}</li>
-    {{/each}}
-</ul>
+
 
 <h2>Update Schedule</h2>
 <form action="/waiters/{{username}}/update" method="post">
