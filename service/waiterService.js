@@ -69,6 +69,7 @@ async function updateSchedule(waiterName, dayOfTheWeek) {
             console.error(error.message)
         }
     }
+
     async function getScheduleByDay() {
         //fetch the schedules from the database
         const allSchedules = await getAllSchedules();
