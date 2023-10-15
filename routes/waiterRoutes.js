@@ -27,7 +27,7 @@ export default function waiterRoutes(waiterRoute){
                       allSchedules[day].status = "green";
                     }
                     else if(count > 5 ){
-                      allSchedules[day].status = "orange";
+                      allSchedules[day].status = "orangered";
                     }
                   }
                   console.log(allSchedules); 
@@ -57,6 +57,7 @@ export default function waiterRoutes(waiterRoute){
             }
             catch (error) {
                 next(error)
+              
             }
                    
         }
@@ -67,11 +68,20 @@ export default function waiterRoutes(waiterRoute){
 
                 const waiterSchedule = await waiterRoute.getWaiterSchedule(waiterName)
                 // console.log(waiterSchedule)
+                if(waiterSchedule.length>=2){
+                    
+                    req.flash('success', `${waiterName}, Your Schedule Has Been Updated!`)
+                }
+                else {
+                    req.flash('error', 'Please Select Atleast 2 Working Days.')
+                }
+                
                 res.render('waiters', { // render the update view
                     waiterSchedule,
                     username: waiterName
                 });
             } catch (error) {
+               
                 next(error)
             }
          
@@ -92,15 +102,18 @@ export default function waiterRoutes(waiterRoute){
         }
         async function resetSchedule(req,res,next){
             try {
-                
-                // get each waiter schedule 
-                await waiterRoute.reset()
-               res.redirect('/day')
-                
-            } catch (error) {
-                next(error)
-            }
-        }
+                await waiterRoute.reset();
+                req.flash('Success', 'Reset Successful!')
+                res.redirect('/day')
+              } catch (error) {
+                console.error('Error resetting data', error);
+                req.flash('error', 'Error clearing data')
+              }
+        
+     
+    }
+        
+        
         return{
             showIndex,
             showAllSchedules,

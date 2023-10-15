@@ -16,13 +16,14 @@
     padding: 5%;
     margin: 2%;
     font-family:'Peralta';
+    width:100%;
 }
 
 .container {
     margin-inline: 25%;
     margin-block: 20%;
     background-color:white;
-    width:auto;
+    width:100% ;
     height:auto;
     padding: 5%;
     margin: 2%;
@@ -43,12 +44,14 @@
 }
 
 table {
-    border-collapse: collapse; 
-    margin-inline: 15%;
+    border-collapse: collapse;
+    margin-inline: auto; 
+    width: 100%;
 }
 th, td {
     border: 1px solid black;
     padding: 10px;
+    text-align: center; 
 }
 .green {
     background-color: green;
@@ -56,8 +59,8 @@ th, td {
 .red {
     background-color: red;
 }
-.orange {
-    background-color: orange;
+.orangered {
+    background-color: orangered;
 }
 
 
@@ -66,7 +69,13 @@ th{
     padding: 10px;
     text-align: left;
 }
-
+li{
+    display: inline-flex;
+    margin: 1%;
+}
+span{
+    color:red;
+}
 td{
     border: black solid 1px;
 }
@@ -77,12 +86,39 @@ td{
   .adminUl{
     border: transparent 1px;
     border-radius: 8px;
-    background-color: white;
-    width: 15%;
-    position: absolute;
-    top: 0;
-    left: 90%;
+    display: inline-flex;
   }
+.green-key{
+    width:5%;
+    height: 1vh;
+    background-color: green;
+    border:solid 1px black;
+    margin-right: auto;
+
+}
+.red-key{
+    width:5%;
+    height: 1vh;
+    background-color: red;
+    border:solid 1px black;
+    margin-right: auto;
+}
+.orange-key{
+    width:5%;
+    height: 1vh;
+    background-color:orangered;
+    border:solid 1px black;
+    margin-right: auto;
+}
+.key{
+    background-color: whitesmoke;
+    margin: 1%;
+    padding: 1%;
+    width:70%;
+    margin-inline: 15%;
+    border: solid white 1px;
+    border-radius: 10px;
+}
   input[type="submit"] {
     background-color: #4CAF50;
     border: 2px solid black;
@@ -97,6 +133,54 @@ td{
     transition-duration: 0.4s;
 }
 
+.flash-success{
+    color:green;
+}
+.flash-error{
+    color:red;
+}
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+/********** SMALL SCREENS *********/
+@media only screen and (max-width: 34em) {
+    .container {
+    width: 100%; 
+     
+   }
+ table{
+    max-width: 50%;
+ }
+ th,td{
+    border: black solid 1px;
+    padding: 10px;
+    text-align: left;
+    max-width: 50%;
+}
+}
+  /****MEDIUM SCREENS***/
+  
+  @media only screen and (min-width: 35em) {
+    .container {
+        width: 80%;
+    }
+
+
+ 
+}
+  
+  /*** LARGE SCREENS***/
+  @media only screen and (min-width: 55em) {
+    .container {
+        width: 85%;
+        table{
+            max-width: 50%;
+         }
+         th,td{
+            border: black solid 1px;
+            padding: 10px;
+            text-align: left;
+            max-width: 50%;
+        }
+    }
+  }

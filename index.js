@@ -42,7 +42,7 @@ app.get('/day', waiterRoute.showAllSchedules)
 app.post('/waiters/:username/update', waiterRoute.updateWaiterSchedule)
 app.get('/waiters/:username/update', waiterRoute.getWaiterUpdatedSchedule)
 app.get('/waiters/:username', waiterRoute.showWaiterSchedule )
-app.get('/reset', waiterRoute.resetSchedule)
+app.post('/reset', waiterRoute.resetSchedule)
 
 
 

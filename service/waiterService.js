@@ -2,7 +2,7 @@ function waiter(db) {
  
     // Function to update waiter's schedule
 async function updateSchedule(waiterName, dayOfTheWeek) {
-    // console.log(waiterName, dayOfTheWeek)
+
     try {
         
                 // Insert waiter name only if it doesn't already exist

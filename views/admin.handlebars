@@ -1,13 +1,23 @@
 <div class="Heading">
    <h1>Weekly Roster </h1> 
+   {{#if messages.error}}
+<div class="flash-error">
+    {{messages.error}}
+</div>
+{{/if}}
+
+{{#if messages.success}}
+<div class="flash-success">
+    {{messages.success}}
+</div>
+{{/if}}
 </div>
 <div class="key">
+     <h3>Staffing status:</h3>
     <ul class="adminUl">
-            <h3>Staffing status:</h3>
-
-        <li>Green - There are enough waiters for the day</li>
-        <li>Red - There are less than 3 waiters available for the day</li>
-        <li>Orange - There are more than 5 waiters for the day</li>
+        <li><div class="green-key"></div> There are enough waiters for the day</li>
+        <li><div class="red-key"></div> There are less than 3 waiters available for the day</li>
+        <li><div class="orange-key"></div>  There are more than 5 waiters for the day</li>
     </ul>
 </div>
 <div class="Onduty">
@@ -39,6 +49,27 @@
 </table>
     </form>
 </div>
-<form action="reset" method="GET">
-    <input type="submit" value="reset">
+<form action="reset" method="POST">
+    <input class="resetB" type="submit" value="reset">
 </form>
+<script>
+// Reset button confirmation
+
+document.querySelector('.resetB').addEventListener('click', async (event) => {
+      event.preventDefault();
+     
+      const confirmReset = confirm('Are you sure you want to reset?');
+      
+      if (confirmReset) {
+        try {
+          const response = await fetch('/reset', { method: 'POST' });
+          if (response.ok) {
+            location.reload()
+          } 
+        } catch (error) {
+          console.error('An error occurred', error);
+        }
+      }
+    });
+
+</script>
