@@ -23,7 +23,7 @@ export default function waiterRoutes(waiterRoute){
                     if(count < 3){
                       allSchedules[day].status = "red";
                     }
-                    else if(count = 3 ){
+                    else if(count === 3 ){
                       allSchedules[day].status = "green";
                     }
                     else if(count > 3){
