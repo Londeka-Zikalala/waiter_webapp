@@ -38,7 +38,7 @@ app.set('views', './views');
 app.use(express.static('public'));
 
 app.get('/', waiterRoute.showIndex)
-app.get('/day', waiterRoute.showAllSchedules)
+app.get('/days', waiterRoute.showAllSchedules)
 app.post('/waiters/:username/update', waiterRoute.updateWaiterSchedule)
 app.get('/waiters/:username/update', waiterRoute.getWaiterUpdatedSchedule)
 app.get('/waiters/:username', waiterRoute.showWaiterSchedule )

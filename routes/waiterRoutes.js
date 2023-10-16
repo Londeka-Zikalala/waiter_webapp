@@ -23,14 +23,15 @@ export default function waiterRoutes(waiterRoute){
                     if(count < 3){
                       allSchedules[day].status = "red";
                     }
-                    else if(count >= 3 && count <= 5){
+                    else if(count = 3 ){
                       allSchedules[day].status = "green";
                     }
-                    else if(count > 5 ){
-                      allSchedules[day].status = "orangered";
+                    else if(count > 3){
+                      allSchedules[day].status = "yellow";
                     }
+                  
                   }
-                  console.log(allSchedules); 
+                 
                   // pass allSchedules to the template
                   res.render('admin',{
                     allSchedules
@@ -39,7 +40,7 @@ export default function waiterRoutes(waiterRoute){
               
             }
             catch (error) {
-                req.flash('error', 'error showing schedukes')
+                req.flash('error', 'error showing schedules')
                 next(error)
             }
 
@@ -67,7 +68,7 @@ export default function waiterRoutes(waiterRoute){
                 const waiterName = req.params.username;
 
                 const waiterSchedule = await waiterRoute.getWaiterSchedule(waiterName)
-                // console.log(waiterSchedule)
+              
                 if(waiterSchedule.length>=2){
                     
                     req.flash('success', `${waiterName}, Your Schedule Has Been Updated!`)
@@ -108,6 +109,7 @@ export default function waiterRoutes(waiterRoute){
               } catch (error) {
                 console.error('Error resetting data', error);
                 req.flash('error', 'Error clearing data')
+                next(error)
               }
         
      

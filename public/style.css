@@ -3,16 +3,12 @@
 *{box-sizing: border-box;
 }
 
-@keyframes float {
-    0% { background-position: 0 0; }
-    100% { background-position: 100% 100%; }
-}
+
 
  body {
     background-image: url('./images/decor.jpg');
     background-size: contain;
     background-repeat:repeat;
-    animation: float 5s linear infinite;
     padding: 5%;
     margin: 2%;
     font-family:'Peralta';
@@ -46,7 +42,7 @@
 table {
     border-collapse: collapse;
     margin-inline: auto; 
-    width: 100%;
+    width:900px;
 }
 th, td {
     border: 1px solid black;
@@ -59,10 +55,12 @@ th, td {
 .red {
     background-color: red;
 }
-.orangered {
-    background-color: orangered;
+.yellow {
+    background-color: yellow;
 }
-
+.navy{
+    background-color: navy;
+}
 
 th{
     border: black solid 1px;
@@ -89,24 +87,30 @@ td{
     display: inline-flex;
   }
 .green-key{
-    width:5%;
-    height: 1vh;
+    width:12%;
+    height: 2vh;
     background-color: green;
     border:solid 1px black;
     margin-right: auto;
 
 }
+h6{
+    background-color: beige;
+    width:60%;
+    margin-inline: 18%;
+    color: navy;
+}
 .red-key{
-    width:5%;
-    height: 1vh;
+    width:10%;
+    height: 2vh;
     background-color: red;
     border:solid 1px black;
     margin-right: auto;
 }
 .orange-key{
-    width:5%;
-    height: 1vh;
-    background-color:orangered;
+    width:10%;
+    height: 2vh;
+    background-color:yellow;
     border:solid 1px black;
     margin-right: auto;
 }
@@ -164,7 +168,15 @@ input[type="submit"]:hover {
     .container {
         width: 80%;
     }
-
+    table{
+        /* max-width: 50%; */
+     }
+     th,td{
+        border: black solid 1px;
+        padding: 10px;
+        text-align: left;
+        /* max-width: 50%; */
+    }
 
  
 }
@@ -173,14 +185,6 @@ input[type="submit"]:hover {
   @media only screen and (min-width: 55em) {
     .container {
         width: 85%;
-        table{
-            max-width: 50%;
-         }
-         th,td{
-            border: black solid 1px;
-            padding: 10px;
-            text-align: left;
-            max-width: 50%;
-        }
+       
     }
   }
