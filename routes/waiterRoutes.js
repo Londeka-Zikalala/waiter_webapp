@@ -21,13 +21,13 @@ export default function waiterRoutes(waiterRoute){
                     const { count } = allSchedules[day];
                     // add a staffingStatus property to each day object
                     if(count < 3){
-                      allSchedules[day].status = "red";
+                      allSchedules[day].status = "yellow";
                     }
                     else if(count === 3 ){
                       allSchedules[day].status = "green";
                     }
                     else if(count > 3){
-                      allSchedules[day].status = "yellow";
+                      allSchedules[day].status = "red";
                     }
                   
                   }
